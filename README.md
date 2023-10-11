@@ -4,4 +4,4 @@
 - make sure pip and pipenv are updated
 - run `pipenv install` in the `backend` folder
 - run `pipenv shell`
-- run `flask run`
+- run `flask run` 
