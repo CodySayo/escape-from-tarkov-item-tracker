@@ -1,10 +1,8 @@
-"use client";
-import QuestSection from "@/components/QuestSection";
 import React, { useState, useEffect } from "react";
 
-export default function Home() {
+export default function ItemCard({}) {
   const [hideoutItems, setHideoutItems] = useState("");
-  const [questItems, setQuestItems] = useState([])
+  const [questItems, setQuestItems] = useState("")
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/", {
@@ -13,7 +11,8 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         setHideoutItems(JSON.stringify(data.data.hideoutStations));
-        setQuestItems(data.data.tasks)
+        setQuestItems(JSON.stringify(data.data.tasks))
+        console.log(data);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -21,8 +20,8 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        {questItems && <p>{JSON.stringify(questItems)}</p>}
-        <QuestSection questItems={questItems}/>
+        {questItems && <p>{questItems}</p>}
+        {hideoutItems && <p>{hideoutItems}</p>}
       </div>
     </main>
   )

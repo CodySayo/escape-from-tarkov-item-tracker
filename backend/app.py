@@ -9,40 +9,56 @@ CORS(app)
 def get_items():
     query = """
     {
-    tasks {
-        name
-        objectives {
-        ... on TaskObjectiveItem {
-            type
-            count
-            item {
+        tasks {
             name
+            objectives {
+            ... on TaskObjectiveItem {
+                type
+                count
+                item {
+                name
+                shortName
+                gridImageLink
+                wikiLink
+                }
+            }
+            ... on TaskObjectiveBuildItem {
+                type
+                item {
+                name
+                shortName
+                gridImageLink
+                wikiLink
+
+                }
+            }
+            ... on TaskObjectiveUseItem {
+                type
+                description
+                count
+                useAny {
+                name
+                shortName
+                gridImageLink
+                wikiLink
+                }
+            }
             }
         }
-        ... on TaskObjectiveBuildItem {
-            type
-            item {
-            name
+        hideoutStations {
+            levels {
+            itemRequirements {
+                item {
+                name
+                shortName
+                gridImageLink
+                wikiLink
+                }
+                count
+            }
             }
         }
-        ... on TaskObjectiveUseItem {
-            type
-            description
-            count
         }
-        }
-    }
-    hideoutStations {
-        levels {
-        itemRequirements {
-            item {
-            name
-            }
-            count
-        }
-        }
-    }
-    }
     """
     headers = {"Content-Type": "application/json"}
     response = requests.post('https://api.tarkov.dev/graphql', headers=headers, json={'query': query})
