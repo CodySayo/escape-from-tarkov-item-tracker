@@ -1,28 +1,22 @@
 import React, { useState, useEffect } from "react";
+import Image from 'next/image'
 
-export default function ItemCard({}) {
-  const [hideoutItems, setHideoutItems] = useState("");
-  const [questItems, setQuestItems] = useState("")
+interface ItemCardProps {
+  item: any;
+}
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/", {
-      method: "GET"
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setHideoutItems(JSON.stringify(data.data.hideoutStations));
-        setQuestItems(JSON.stringify(data.data.tasks))
-        console.log(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
+export default function ItemCard({item}: ItemCardProps) {
+  console.log(item)
+  let {count, name, shortName, imageLink, wikiLink} = item
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="border-2 border-white rounded flex min-h-min flex-row items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        {questItems && <p>{questItems}</p>}
-        {hideoutItems && <p>{hideoutItems}</p>}
+        <p>{count}</p>
+        <p>{name}</p>
+        <p>{shortName}</p>
+        <img src={imageLink} alt={name} height={"100px"} width={"auto"}/>
+        <a href={wikiLink} target="_blank">Wiki</a>
       </div>
-    </main>
+    </div>
   )
 }
