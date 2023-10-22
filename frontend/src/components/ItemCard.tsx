@@ -18,7 +18,9 @@ export default function ItemCard({item}: ItemCardProps) {
         </div>
         <p className="px-3">{name}</p>
         <p className="px-3">{shortName}</p>
-        <img className="px-3" src={imageLink} alt={name} height={"100px"} width={"auto"}/>
+        <div className="items-center flex h-28">
+          <img className="px-3 max-h-28" src={imageLink} alt={name} height={"100px"} width={"auto"}/>
+        </div>
         <a className="hover:underline" href={wikiLink} target="_blank">Wiki</a>
       </div>
     </div>
