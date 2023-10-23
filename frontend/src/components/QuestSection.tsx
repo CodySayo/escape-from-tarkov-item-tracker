@@ -30,13 +30,17 @@ export default function QuestSection({questItems}: QuestSectionProps) {
         }
       })
     });
-    setItems(Array.from(map.entries()))
+    setItems(Array.from(map.values()))
   }, [questItems]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+    <>
+      <h2>Task Items</h2>
+      <div className="flex min-h-screen flex-col items-center justify-between p-24">
+        <div className="flex-col z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+          {items.map((item) => <ItemCard key={item.name} item={item}/>)}
+        </div>
       </div>
-    </main>
+    </>
   )
 }
