@@ -8,6 +8,7 @@ interface QuestSectionProps {
 
 export default function QuestSection({questItems, userData}: QuestSectionProps) {
   const [items, setItems] = useState<any[]>([]);
+  console.log(userData)
   
   useEffect(() => {
     let map = new Map();
@@ -39,7 +40,7 @@ export default function QuestSection({questItems, userData}: QuestSectionProps) 
       <h2>Task Items</h2>
       <div className="flex min-h-screen flex-col items-center justify-between p-24">
         <div className="flex-col z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-          {items.map((item) => <ItemCard key={item.name} item={item} numFound={userData[item.shortName + "T"] ?? "0"}/>)}
+          {items.map((item) => <ItemCard key={item.name} item={item} numFound={userData[item.shortName + "T"] ?? "0"} isTaskItem/>)}
         </div>
       </div>
     </>

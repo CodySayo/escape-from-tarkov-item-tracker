@@ -24,6 +24,7 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         setHideoutItems(JSON.stringify(data.data.hideoutStations));
         setQuestItems(data.data.tasks)
         setUserData(data.userdata)

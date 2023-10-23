@@ -4,8 +4,8 @@ import requests
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-import bcrypt
 import json
+import hashlib
 
 cred = credentials.Certificate("serviceAccountKey.json")
 app = firebase_admin.initialize_app(cred)
@@ -17,17 +17,32 @@ doc_ref.set({})
 app = Flask(__name__)
 CORS(app)
 
-# @app.route("/post", )
+@app.route("/updateItemCount", methods=["POST"])
+def update_DB():
+    body = request.get_json()
+    email = body["user"]
+    shortName = body["shortName"]
+    count = body["count"]
+
+    encodedEmail = email.encode("utf-8")
+    hashed = str(int(hashlib.md5(encodedEmail).hexdigest(), 16))
+    user_ref = db.collection("users").document(hashed)
+    user_ref.set({shortName: count}, merge=True)
+
+    return "200"
 
 @app.route("/", methods=["POST"])
 def get_items():
     email = request.get_json()["user"]
-    encodedEmail = email.encode("utf-8")
-    hashed = bcrypt.hashpw(encodedEmail, bcrypt.gensalt())
-    doc_ref = db.collection("users").document("alovelace")
-    docs = doc_ref.get()
-    print(hashed)
-    print(docs.to_dict())
+    if email != "":
+        encodedEmail = email.encode("utf-8")
+        hashed = str(int(hashlib.md5(encodedEmail).hexdigest(), 16))
+        user_ref = db.collection("users").document(hashed)
+        user = user_ref.get()
+        if not user.exists:
+            db.collection("users").document(hashed).set({})
+        user_ref = db.collection("users").document(hashed)
+        user = user_ref.get()
 
     query = """
     {
@@ -68,6 +83,7 @@ def get_items():
             }
         }
         hideoutStations {
+            name
             levels {
             itemRequirements {
                 item {
@@ -86,7 +102,8 @@ def get_items():
     response = requests.post('https://api.tarkov.dev/graphql', headers=headers, json={'query': query})
     if response.status_code == 200:
         combinedResponse = response.json() 
-        combinedResponse["userdata"] = docs.to_dict() if docs.exists else "{}"
+        combinedResponse["userdata"] = user.to_dict() if email != "" else {}
+        print(combinedResponse)
         return combinedResponse
     else:
         raise Exception("Query failed to run by returning code of {}. {}".format(response.status_code, query))
