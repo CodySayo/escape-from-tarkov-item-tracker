@@ -3,9 +3,10 @@ import ItemCard from "./ItemCard";
 
 interface QuestSectionProps {
   questItems: any[];
+  userData: any;
 }
 
-export default function QuestSection({questItems}: QuestSectionProps) {
+export default function QuestSection({questItems, userData}: QuestSectionProps) {
   const [items, setItems] = useState<any[]>([]);
   
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function QuestSection({questItems}: QuestSectionProps) {
       <h2>Task Items</h2>
       <div className="flex min-h-screen flex-col items-center justify-between p-24">
         <div className="flex-col z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-          {items.map((item) => <ItemCard key={item.name} item={item}/>)}
+          {items.map((item) => <ItemCard key={item.name} item={item} numFound={userData[item.shortName + "T"] ?? "0"}/>)}
         </div>
       </div>
     </>
