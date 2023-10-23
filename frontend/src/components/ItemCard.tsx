@@ -16,8 +16,8 @@ export default function ItemCard({item}: ItemCardProps) {
           <p className="px-3">/</p>
           <p className="px-1">{count}</p>
         </div>
-        <p className="px-3">{name}</p>
-        <p className="px-3">{shortName}</p>
+        <p className="px-3">{name} [{shortName}]</p>
+        <p className="px-3"></p>
         <div className="items-center flex h-28">
           <img className="px-3 max-h-28" src={imageLink} alt={name} height={"100px"} width={"auto"}/>
         </div>
